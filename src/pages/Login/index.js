@@ -1,14 +1,29 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import './index.scss'
-const onFinish = (values) => {
-    console.log('Success:', values);
-};
+import { fetchLogin } from '@/store/modules/user';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+
+
 const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
 };
-const Login = () => (
-    <body>
+const Login = () => {
+    const dispatch = useDispatch()
+    const navigator = useNavigate()
+    const onFinish = async (values) => {
+        console.log(values)
+        await dispatch(fetchLogin(values))
+        //  1.跳转页面
+        navigator('/')
+        // 2.提示用户
+        message.success('登录成功')
+    }
+
+    return (
+
         <section>
             <Form
                 name="basic"
@@ -74,6 +89,8 @@ const Login = () => (
             </Form>
 
         </section >
-    </body>
-);
+
+    )
+
+};
 export default Login;
